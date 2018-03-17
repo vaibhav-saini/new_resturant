@@ -80,7 +80,7 @@
        document.getElementById('search_nam').value = ""
        var sel = document.getElementById('driver_sel').value
        var sel_status = document.getElementById('select_id').value
-      if(sel != "reset" || sel_status != "reset"){
+      if(sel != "Select driver" || sel_status != "Select status"){
             document.getElementById('driver_sel').selectedIndex = 0;
             document.getElementById('select_id').selectedIndex = 0;
       }
