@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://tripfur.com/css/bootstrap.min.css">
+    <style>
+        .col_box {
+            background-color: #eee;
+            text-align: center;
+            padding: 15px 0;
+            
+    border: 2px solid transparent;
+        }
+        .block .col_box {
+    border-color: #000;
+}
+
+        #demo .col-sm-3 {
+            margin: 0 0 30px;
+        }
+
+        .col_box div {
+            padding: 3px 0;
+        }
+
+        body {
+            padding: 30px 0;
+        }
+
+        .search_contt>div {
+            display: inline-block;
+            vertical-align: top;
+            margin: 0 15px 0 0;
+        }
+
+        .search_contt select {
+            height: 26px;
+            width: 142px;
+        }
+
+        .search_contt {
+            text-align: right;
+            margin: 0 0 17px;
+        }
+
+        div#status_cont {}
+
+        .search_contt>div:last-child {
+            margin-right: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="search_contt">
+            <div id="select_search"></div>
+            <div id="select_cont"></div>
+            <div id="status_cont"></div>
+
+        </div>
+        <div id="demo"></div>
+    </div>
+
+
+</body>
+
+
+<script>
+ 
+ document.getElementById('select_search').innerHTML = '<input id="search_nam" type="text" placeholder="search name here" onkeyup="search_name()">'
+
+/*================== order list ajax ==============*/
+    var ajax_on = new XMLHttpRequest();
+    ajax_on.open("GET", "order.json");
+    ajax_on.send();
+    ajax_on.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            var a = this.response;
+            a = JSON.parse(a);
+            var temp_box = "";
+            for (var i = 0; i < a.length; i++) {
+                var box_one = '<div id=box_'+i+' class="col-sm-3"><div class="col_box" id="vai"><div><strong>OrderNo:</strong>'+ a[i].OrderNo+'</div><div><strong>OrderRec:</strong>'+a[i].OrderRecipe+'</div><div><strong>OrderClient:</strong><span>'+ a[i].OrderClient+'</span></div><div><strong>Orderstatus:</strong><span>'+a[i].Status+'</span></div><div><strong>DriverName:</strong><span>'+a[i].DriverName+'</span></div></div></div>'
+                temp_box = temp_box + box_one;
+            }
+            var temp_div = '<div class="row">' + temp_box + '</div>';
+            document.getElementById('demo').innerHTML = temp_div;
+       
+            
+        }
+         
+        
+    }
+    
+/*================== order list driver ==============*/
+    var ajax_drivers = new XMLHttpRequest();
+    ajax_drivers.open("GET", "driver.json");
+    ajax_drivers.send();
+    ajax_drivers.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            var b = this.response;
+            b = JSON.parse(b);
+            var temp_driver = "";
+            for (var i = 0; i < b.length; i++) {
+                var driver_one = '<option value = '+b[i].DrverName+'>' + b[i].DrverName + '</option>'
+                temp_driver = temp_driver + driver_one
+            }
+            var select_main = '<select id="driver_sel" onchange="driver()"> ' + temp_driver + ' </select>'
+            document.getElementById('select_cont').innerHTML = select_main
+        }
+    }
+/*================== order list status ==============*/
+    var ajax_status = new XMLHttpRequest();
+    ajax_status.open("GET", "status.json");
+    ajax_status.send();
+    ajax_status.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            var c = this.response;
+            c = JSON.parse(c);
+            var temp_status = "";
+            for (var i = 0; i < c.length; i++) {
+                var status_one = '<option value = '+c[i].Status+'>' + c[i].Status + '</option>'
+                temp_status = temp_status + status_one
+            }
+            var select_status = '<select id="select_id" onchange="abc()"> ' + temp_status + ' </select>'
+            document.getElementById('status_cont').innerHTML = select_status
+        }
+    }
+    
+/*================== order list search with input ==============*/
+  function search_name() {
+                var srchh = document.getElementById('search_nam').value;
+                var demo = document.getElementById('demo');
+                var classs= demo.getElementsByClassName("col_box")
+                for(var i = 0; i < classs.length; i++){
+                    var loop_i = classs[i];
+                        //console.log(loop_i)
+                    var node_list = loop_i.childNodes[2]
+                   console.log(node_list)
+                    var node_span = node_list.getElementsByTagName('span')[0]
+                       // console.log(node_span)
+                    var col_boot = document.getElementsByClassName('col-sm-3')
+                    if(node_span.innerHTML.indexOf(srchh) > -1){
+
+                       col_boot[i].style.display="block";
+                    }
+                 else{
+                             col_boot[i].style.display="none";
+                    }
+                     
+                }
+                }
+               
+  /*=============== select =================*/
+    function abc(){
+         var x = document.getElementById('select_id').value
+         var demo = document.getElementById('demo');
+                var classs= demo.getElementsByClassName("col_box")
+                for(var i = 0; i < classs.length; i++){
+                    var loop_i = classs[i];
+                        //console.log(loop_i)
+                    var node_list = loop_i.childNodes[3]
+//console.log(node_list)
+                    var node_span = node_list.getElementsByTagName('span')[0]
+                       // console.log(node_span)
+                    var col_boot = document.getElementsByClassName('col-sm-3')
+                    if(node_span.innerHTML.indexOf(x) > -1){
+                       // console.log(x);
+                       col_boot[i].className = "col-sm-3 block"
+                    }
+                    else{
+                             col_boot[i].classList.remove("block") 
+                    }
+                    
+                     
+                }
+                }          
+    
+      /*=============== driver =================*/
+    function driver(){
+         var y = document.getElementById('driver_sel').value
+         var demo = document.getElementById('demo');
+                var classs= demo.getElementsByClassName("col_box")
+                for(var i = 0; i < classs.length; i++){
+                    var loop_i = classs[i];
+                        //console.log(loop_i)
+                    var node_list = loop_i.childNodes[4]
+//console.log(node_list)
+                    var node_span = node_list.getElementsByTagName('span')[0]
+                       // console.log(node_span)
+                    var col_boot = document.getElementsByClassName('col-sm-3')
+                    if(node_span.innerHTML.indexOf(y) > -1){
+                       // console.log(x);
+                       col_boot[i].className = "col-sm-3 block"
+                    }
+                    else{
+                             col_boot[i].classList.remove("block") 
+                    }
+                    
+                     
+                }
+                }          
+    
+    
+    
+  
+
+</script>
+
+</html>
