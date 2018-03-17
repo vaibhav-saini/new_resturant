@@ -57,6 +57,7 @@
     <div class="container">
 
         <div class="search_contt">
+            <div id="reset_search"></div>
             <div id="select_search"></div>
             <div id="select_cont"></div>
             <div id="status_cont"></div>
@@ -72,6 +73,9 @@
 <script>
  
  document.getElementById('select_search').innerHTML = '<input id="search_nam" type="text" placeholder="search name here" onkeyup="search_name()">'
+ document.getElementById('reset_search').innerHTML = '<button type="button" onclick="reset()">Reset</button>'
+
+    
 
 /*================== order list ajax ==============*/
     var ajax_on = new XMLHttpRequest();
@@ -130,84 +134,12 @@
         }
     }
     
-/*================== order list search with input ==============*/
-  function search_name() {
-                var srchh = document.getElementById('search_nam').value;
-                var demo = document.getElementById('demo');
-                var classs= demo.getElementsByClassName("col_box")
-                for(var i = 0; i < classs.length; i++){
-                    var loop_i = classs[i];
-                        //console.log(loop_i)
-                    var node_list = loop_i.childNodes[2]
-                   console.log(node_list)
-                    var node_span = node_list.getElementsByTagName('span')[0]
-                       // console.log(node_span)
-                    var col_boot = document.getElementsByClassName('col-sm-3')
-                    if(node_span.innerHTML.indexOf(srchh) > -1){
 
-                       col_boot[i].style.display="block";
-                    }
-                 else{
-                             col_boot[i].style.display="none";
-                    }
-                     
-                }
-                }
-               
-  /*=============== select =================*/
-    function abc(){
-         var x = document.getElementById('select_id').value
-         var demo = document.getElementById('demo');
-                var classs= demo.getElementsByClassName("col_box")
-                for(var i = 0; i < classs.length; i++){
-                    var loop_i = classs[i];
-                        //console.log(loop_i)
-                    var node_list = loop_i.childNodes[3]
-//console.log(node_list)
-                    var node_span = node_list.getElementsByTagName('span')[0]
-                       // console.log(node_span)
-                    var col_boot = document.getElementsByClassName('col-sm-3')
-                    if(node_span.innerHTML.indexOf(x) > -1){
-                       // console.log(x);
-                       col_boot[i].className = "col-sm-3 block"
-                    }
-                    else{
-                             col_boot[i].classList.remove("block") 
-                    }
-                    
-                     
-                }
-                }          
-    
-      /*=============== driver =================*/
-    function driver(){
-         var y = document.getElementById('driver_sel').value
-         var demo = document.getElementById('demo');
-                var classs= demo.getElementsByClassName("col_box")
-                for(var i = 0; i < classs.length; i++){
-                    var loop_i = classs[i];
-                        //console.log(loop_i)
-                    var node_list = loop_i.childNodes[4]
-//console.log(node_list)
-                    var node_span = node_list.getElementsByTagName('span')[0]
-                       // console.log(node_span)
-                    var col_boot = document.getElementsByClassName('col-sm-3')
-                    if(node_span.innerHTML.indexOf(y) > -1){
-                       // console.log(x);
-                       col_boot[i].className = "col-sm-3 block"
-                    }
-                    else{
-                             col_boot[i].classList.remove("block") 
-                    }
-                    
-                     
-                }
-                }          
-    
-    
-    
   
 
 </script>
+    
+    <script src="order_serach.js"></script>
+ 
 
 </html>
