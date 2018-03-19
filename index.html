@@ -91,7 +91,7 @@
             a = JSON.parse(a);
             var temp_box = "";
             for (var i = 0; i < a.length; i++) {
-                var box_one = '<div id=box_'+i+' class="col-sm-3"><div class="col_box" id="vai"><div><strong>OrderNo:</strong>'+ a[i].OrderNo+'</div><div><strong>OrderRec:</strong>'+a[i].OrderRecipe+'</div><div><strong>OrderClient:</strong><span>'+ a[i].OrderClient+'</span></div><div><strong>Orderstatus:</strong><span>'+a[i].Status+'</span></div><div><strong>DriverName:</strong><span>'+a[i].DriverName+'</span></div></div></div>'
+                var box_one = '<div id=box_'+i+' class="col-sm-3"><div class="col_box" id="vai"><div><strong>OrderNo:</strong><span>'+ a[i].OrderNo+'</span></div><div><strong>OrderRec:</strong><span>'+a[i].OrderRecipe+'</span></div><div><strong>OrderClient:</strong><span>'+ a[i].OrderClient+'</span></div><div><strong>Orderstatus:</strong><span>'+a[i].Status+'</span></div><div><strong>DriverName:</strong><span>'+a[i].DriverName+'</span></div></div></div>'
                 temp_box = temp_box + box_one;
             }
             var temp_div = '<div class="row">' + temp_box + '</div>';
