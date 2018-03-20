@@ -13,8 +13,7 @@
 							col_boot[i].className = "col-sm-3 block"
 							list_span[j].className = "bold"
 						}
-						else if(list_span[j].innerHTML != srchh){
-							console.log('sad');
+						else{
 							col_boot[i].classList.remove = "block"
 							list_span[j].classList.remove = "bold"
 						}
