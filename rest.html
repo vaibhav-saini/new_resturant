@@ -106,16 +106,21 @@
     <div id="edit_modal" class="modal fade" role="dialog">
         <div class="modal-dialog"> </div>
     </div>
+     <div id="delete_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog"> </div>
+    </div>
+    
+    
 </body>
     
     
    
 
     <script>
-        var add = document.getElementById('add').innerHTML = '<button type="button" data-toggle="modal" data-target="#add_modal">Add button</button>'
+        var add = document.getElementById('add').innerHTML = '<button onclick="reset_value()" type="button" data-toggle="modal" data-target="#add_modal">Add button</button>'
         var add_html = document.getElementById('add_modal');
         var add_inner = add_html.getElementsByClassName("modal-dialog");
-         add_inner[0].innerHTML = '<div class="form"><div class="col_add"><strong>OrderNumber:</strong><span><input onkeyup="new_value()" id="OrderNumber" type="text"></span></div><div class="col_add"><strong>OrderName:</strong><span><input onkeyup="new_value()" id="OrderName" type="text"></span></div><div class="col_add"><strong>OrderStatus:</strong><span><input onkeyup="new_value()" id="OrderStatus" type="text"></span></div><div class="col_add"><strong>ClientName:</strong><span><input onkeyup="new_value()" type="text" id="ClientName"></span></div><div class="col_add"><strong>PhoneNumber:</strong><span><input onkeyup="new_value()" id="PhoneNumber" type="text"></span></div><div class="col_add"><strong>Driver:</strong><span><input onkeyup="new_value()" id="Driver" type="text"></span></div><div class="col_add"><strong>ClientAddress:</strong><span><textarea id="ClientAddress" onkeyup="new_value()"></textarea></span></div></div><div class="btns_save"><button onclick="save_dat(new_value())" type="button" class="btn btn-default">Save</button><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'
+         add_inner[0].innerHTML = '<div class="form"><div class="col_add"><strong>OrderNumber:</strong><span><input onkeyup="new_value()" id="OrderNumber" type="text"></span></div><div class="col_add"><strong>OrderName:</strong><span><input onkeyup="new_value()" id="OrderName" type="text"></span></div><div class="col_add"><strong>OrderStatus:</strong><span><input onkeyup="new_value()" id="OrderStatus" type="text"></span></div><div class="col_add"><strong>ClientName:</strong><span><input onkeyup="new_value()" type="text" id="ClientName"></span></div><div class="col_add"><strong>PhoneNumber:</strong><span><input onkeyup="new_value()" id="PhoneNumber" type="text"></span></div><div class="col_add"><strong>Driver:</strong><span><input onkeyup="new_value()" id="Driver" type="text"></span></div><div class="col_add"><strong>ClientAddress:</strong><span><textarea id="ClientAddress" onkeyup="new_value()"></textarea></span></div></div><div class="btns_save"><button onclick="save_dat(new_value())" type="button" class="btn btn-default" >Save</button><button type="button" id="save_btn" class="btn btn-default" data-dismiss="modal">Close</button></div>'
        // var classname = document.getElementsByClassName('col_add');
         
        // function valueFunction(){
@@ -133,15 +138,23 @@
             var order_main = orderData;
             var temp = "";
             for(var i = 0; i<order_main.length; i++){
-               var htmll = '<div class="col-sm-3" id='+order_main[i]._id+'><div class="col_box" ><div>OrderNo:<span>'+order_main[i].ordernumber+'</span></div><div>OrderNmae: <span>'+order_main[i].ordername+'</span></div><div>OrderStatus:<span>'+order_main[i].orderstatus+'</span></div><div>Clientname:<span>'+order_main[i].clientname+'</span></div><div>Clientaddress:<span>'+order_main[i].clientaddress+'</span></div><div>Phonenno:<span>'+order_main[i].phonenuber+'</span></div><div>driver:<span>'+order_main[i].driver+'</span></div><button type="button" data-toggle="modal" data-target="#edit_modal"  onclick="edit_func(\'' + order_main[i]._id + '\')">edit</button></div></div>'
+               var htmll = '<div class="col-sm-3" id='+order_main[i]._id+'><div class="col_box" ><div>OrderNo:<span>'+order_main[i].ordernumber+'</span></div><div>OrderNmae: <span>'+order_main[i].ordername+'</span></div><div>OrderStatus:<span>'+order_main[i].orderstatus+'</span></div><div>Clientname:<span>'+order_main[i].clientname+'</span></div><div>Clientaddress:<span>'+order_main[i].clientaddress+'</span></div><div>Phonenno:<span>'+order_main[i].phonenuber+'</span></div><div>driver:<span>'+order_main[i].driver+'</span></div><button type="button" data-toggle="modal" data-target="#edit_modal"  onclick="edit_func(\'' + order_main[i]._id + '\')">edit</button><button type="button" data-toggle="modal" data-target="#delete_modal" onclick="delete_confirm(\'' + order_main[i]._id + '\')">delete</button></div></div>'
                temp =  temp + htmll
-                
-              
-           
-             }
-       
-             document.getElementById('demo').innerHTML = '<div class="container"><div class="row">'+temp+'</div></div>'
-        }  
+              }
+        
+         document.getElementById('demo').innerHTML = '<div class="container"><div class="row">'+temp+'</div></div>'
+        
+               
+        } 
+        
+         /*==== delet popup ***/
+   
+        function delete_confirm(id_delete){
+             var delete_html = document.getElementById('delete_modal');
+            var delete_inner = delete_html.getElementsByClassName("modal-dialog");
+         delete_inner[0].innerHTML = '<div class="text">Are you sure want to delete ?</div><div class="btn_delete"><button type="button" onclick="delete_func(\'' + id_delete + '\')">delete</button><button id="cancel_button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button></div>'
+        }
+             
         
     function get_request(){
             var http = new XMLHttpRequest();
@@ -176,21 +189,35 @@
         return obj;
     }    
         
+        function reset_value(){
+           document.getElementById('OrderNumber').value = "";
+       document.getElementById('OrderName').value  = "";
+     document.getElementById('OrderStatus').value  = "";
+         document.getElementById('ClientName').value  = "";
+       document.getElementById('ClientAddress').value  = "";
+      document.getElementById('PhoneNumber').value  = "";
+      document.getElementById('Driver').value  = "";
+        }
+       
     function save_dat(neww){
-            if(neww.ordernumber != "" && neww.ordername != ""){
+            
+            if(neww.ordernumber != "" && neww.ordername != "" && neww.OrderStatus != "" && neww.ClientName != ""  && neww.ClientAddress != "" && neww.phonenuber != "" && neww.driver != ""){
                     var post_mthd = new XMLHttpRequest();
                     post_mthd.open("POST","https://restaurantappp.herokuapp.com/api/order");
                     post_mthd.setRequestHeader("content-type","application/json");
                     post_mthd.send(JSON.stringify(neww))
                     post_mthd.onreadystatechange = function(){
                         if(this.readyState == 4){
-                             get_request()
-                            document.getElementById('add_modal').style.display="none";
+                       
+                            $('#save_btn').click();
+                              get_request()
+                           
+                           
                         }
                     }
             }
             else{
-                alert('please')
+                alert('please fill all fields')
             }
         }
         
@@ -217,7 +244,7 @@
             var edit_inner = edit_html.getElementsByClassName("modal-dialog");
             //console.log
             var i =0
-            edit_inner[0].innerHTML = '<div class="form"><div class="col_add"><strong>OrderNumber:</strong><span><input onkeyup="edit_value()" id="edit_order_no" value='+id_class[0].innerHTML+' onkeyup="edit_value()" type="text"></span></div><div class="col_add"><strong>OrderName:</strong><span><input value='+id_class[i+1].innerHTML+' onkeyup="edit_value()" id="edit_order_nme" type="text"></span></div><div class="col_add"><strong>OrderStatus:</strong><span><input value='+id_class[i+2].innerHTML+' onkeyup="edit_value()" id="edit_order_status" type="text"></span></div><div class="col_add"><strong>ClientName:</strong><span><input value='+id_class[i+3].innerHTML+' onkeyup="edit_value()" id="edit_client_nam" type="text"></span></div><div class="col_add"><strong>PhoneNumber:</strong><span><input value='+id_class[i+4].innerHTML+'  onkeyup="edit_value()" type="text" id="edit_phone_no"></span></div><div class="col_add"><strong>Driver:</strong><span><input value='+id_class[i+5].innerHTML+' onkeyup="edit_value()" type="text" id="edit_driver"></span></div><div class="col_add"><strong>ClientAddress:</strong><span><textarea id="edit_address" onkeyup="edit_value()">'+id_class[i+6].innerHTML+'</textarea></span></div></div><div class="btns_save"><button onclick="edit_save(edit_value())" type="button" class="btn btn-default">Update</button><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'
+            edit_inner[0].innerHTML = '<div class="form"><div class="col_add"><strong>OrderNumber:</strong><span><input onkeyup="edit_value()" id="edit_order_no" value='+id_class[0].innerHTML+' onkeyup="edit_value()" type="text"></span></div><div class="col_add"><strong>OrderName:</strong><span><input value='+id_class[i+1].innerHTML+' onkeyup="edit_value()" id="edit_order_nme" type="text"></span></div><div class="col_add"><strong>OrderStatus:</strong><span><input value='+id_class[i+2].innerHTML+' onkeyup="edit_value()" id="edit_order_status" type="text"></span></div><div class="col_add"><strong>ClientName:</strong><span><input value='+id_class[i+3].innerHTML+' onkeyup="edit_value()" id="edit_client_nam" type="text"></span></div><div class="col_add"><strong>PhoneNumber:</strong><span><input value='+id_class[i+4].innerHTML+'  onkeyup="edit_value()" type="text" id="edit_phone_no"></span></div><div class="col_add"><strong>Driver:</strong><span><input value='+id_class[i+5].innerHTML+' onkeyup="edit_value()" type="text" id="edit_driver"></span></div><div class="col_add"><strong>ClientAddress:</strong><span><textarea id="edit_address" onkeyup="edit_value()">'+id_class[i+6].innerHTML+'</textarea></span></div></div><div class="btns_save"><button onclick="edit_save(\'' + id_uniq + '\')" type="button" class="btn btn-default">Update</button><button id="close_update" type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'
         
         }
           // edit_value()
@@ -236,20 +263,32 @@
         
       
         function edit_save(aa){
-            console.log(aa);
+            var data_edit =edit_value()
             var edit = new XMLHttpRequest();
-            edit.open("PUT","https://restaurantappp.herokuapp.com/api/order/aa")
+            edit.open("PUT","https://restaurantappp.herokuapp.com/api/order/"+aa+"")
             edit.setRequestHeader("content-type","application/json")
-            edit.send(JSON.stringify(aa))
+            edit.send(JSON.stringify(data_edit))
             edit.onreadystatechange=function(){
                 if(this.readyState==4){
-                    console.log('success')
+                       $('#close_update').click();
+                        get_request()
                 }
             }
         }
         
         
-        
+        function delete_func(delete_id){
+            var del = new XMLHttpRequest;
+            del.open("DELETE","https://restaurantappp.herokuapp.com/api/order/"+delete_id+"")
+            del.setRequestHeader("content-type","application/json")
+            del.send(null);
+            del.onreadystatechange = function(){
+                if(this.readyState == 4){
+                    $('#cancel_button').click();
+                    get_request()
+                }
+            }
+        }
     
         
         
