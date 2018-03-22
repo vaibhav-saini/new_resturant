@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+        <link rel="stylesheet" href="https://tripfur.com/css/bootstrap.min.css">
+    <script  src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+     <script src="https://tripfur.com/js/bootstrap.min.js"></script>
+    <style>
+        .col_box {
+            background-color: #eee;
+            text-align: center;
+            padding: 15px 0;
+            
+    border: 2px solid transparent;
+        }
+        .block .col_box {
+    border-color: #000;
+}
+
+        #demo .col-sm-3 {
+            margin: 0 0 30px;
+        }
+
+        .col_box div {
+            padding: 3px 0;
+        }
+
+        body {
+            padding: 30px 0;
+        }
+
+        .search_contt>div {
+            display: inline-block;
+            vertical-align: top;
+            margin: 0 15px 0 0;
+        }
+
+        .search_contt select {
+            height: 26px;
+            width: 142px;
+        }
+
+        .search_contt {
+            text-align: right;
+            margin: 0 0 17px;
+        }
+
+        div#status_cont {}
+
+        .search_contt>div:last-child {
+            margin-right: 0;
+        }
+		span.bold {
+    color: #ff0b0b;
+    font-weight: normal;
+}
+        .modal-dialog {
+    background-color: #fff;
+    padding: 30px;
+    width: 351px;
+}
+
+.col_add strong {
+    display: inline-block;
+    width: 130px;
+    vertical-align: middle;
+    font-weight: normal;
+    letter-spacing: .02em;
+}
+
+.col_add {
+    margin: 0 0 12px;
+}
+
+.col_add span {
+    width: calc(100% - 130px);
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.col_add span input {
+    width: 100%;
+    height: 37px;
+}
+.col_add textarea {
+    height: 79px;
+    resize: none;
+}
+        .btns_save button {
+    margin: 0 7px;
+        }
+        .btns_save{
+            text-align: center;
+        }
+    </style>
+</head>
+<body onload="">
+    <div id="demo"></div>
+    <div id="add"></div>
+
+
+     <div id="add_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog"> </div>
+    </div>
+    <div id="edit_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog"> </div>
+    </div>
+</body>
+    
+    
+   
+
+    <script>
+        var add = document.getElementById('add').innerHTML = '<button type="button" data-toggle="modal" data-target="#add_modal">Add button</button>'
+        var add_html = document.getElementById('add_modal');
+        var add_inner = add_html.getElementsByClassName("modal-dialog");
+         add_inner[0].innerHTML = '<div class="form"><div class="col_add"><strong>OrderNumber:</strong><span><input onkeyup="new_value()" id="OrderNumber" type="text"></span></div><div class="col_add"><strong>OrderName:</strong><span><input onkeyup="new_value()" id="OrderName" type="text"></span></div><div class="col_add"><strong>OrderStatus:</strong><span><input onkeyup="new_value()" id="OrderStatus" type="text"></span></div><div class="col_add"><strong>ClientName:</strong><span><input onkeyup="new_value()" type="text" id="ClientName"></span></div><div class="col_add"><strong>PhoneNumber:</strong><span><input onkeyup="new_value()" id="PhoneNumber" type="text"></span></div><div class="col_add"><strong>Driver:</strong><span><input onkeyup="new_value()" id="Driver" type="text"></span></div><div class="col_add"><strong>ClientAddress:</strong><span><textarea id="ClientAddress" onkeyup="new_value()"></textarea></span></div></div><div class="btns_save"><button onclick="save_dat(new_value())" type="button" class="btn btn-default">Save</button><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'
+       // var classname = document.getElementsByClassName('col_add');
+        
+       // function valueFunction(){
+            //var inputValue = "";
+        //    for(var i =0; i<classname.length;i++){
+         //   var classValue = classname[i].getElementsByTagName('input');
+          //      console.log(classValue[i].value)
+         //   }
+      //  }
+       
+       // console.log(classname)
+             
+        
+    function new_html(orderData){
+            var order_main = orderData;
+            var temp = "";
+            for(var i = 0; i<order_main.length; i++){
+               var htmll = '<div class="col-sm-3" id='+order_main[i]._id+'><div class="col_box" ><div>OrderNo:<span>'+order_main[i].ordernumber+'</span></div><div>OrderNmae: <span>'+order_main[i].ordername+'</span></div><div>OrderStatus:<span>'+order_main[i].orderstatus+'</span></div><div>Clientname:<span>'+order_main[i].clientname+'</span></div><div>Clientaddress:<span>'+order_main[i].clientaddress+'</span></div><div>Phonenno:<span>'+order_main[i].phonenuber+'</span></div><div>driver:<span>'+order_main[i].driver+'</span></div><button type="button" data-toggle="modal" data-target="#edit_modal"  onclick="edit_func(\'' + order_main[i]._id + '\')">edit</button></div></div>'
+               temp =  temp + htmll
+                
+              
+           
+             }
+       
+             document.getElementById('demo').innerHTML = '<div class="container"><div class="row">'+temp+'</div></div>'
+        }  
+        
+    function get_request(){
+            var http = new XMLHttpRequest();
+            http.open("GET","https://restaurantappp.herokuapp.com/api/order");
+            http.send();
+            http.onreadystatechange = function(){
+                //console.log(this.response)
+                 if(this.readyState == 4){
+                      var data = this.response;
+                        data = JSON.parse(data);
+                        new_html(data);
+                   }
+            }
+            
+        }
+    
+    get_request();
+      
+
+        
+ 
+        
+    function new_value(){
+        var obj = new Object();
+        obj.ordernumber = document.getElementById('OrderNumber').value;
+        obj.ordername = document.getElementById('OrderName').value;
+        obj.orderstatus = document.getElementById('OrderStatus').value;
+        obj.clientname = document.getElementById('ClientName').value;
+        obj.clientaddress = document.getElementById('ClientAddress').value;
+        obj.phonenuber = document.getElementById('PhoneNumber').value;
+        obj.driver = document.getElementById('Driver').value;
+        return obj;
+    }    
+        
+    function save_dat(neww){
+            if(neww.ordernumber != "" && neww.ordername != ""){
+                    var post_mthd = new XMLHttpRequest();
+                    post_mthd.open("POST","https://restaurantappp.herokuapp.com/api/order");
+                    post_mthd.setRequestHeader("content-type","application/json");
+                    post_mthd.send(JSON.stringify(neww))
+                    post_mthd.onreadystatechange = function(){
+                        if(this.readyState == 4){
+                             get_request()
+                            document.getElementById('add_modal').style.display="none";
+                        }
+                    }
+            }
+            else{
+                alert('please')
+            }
+        }
+        
+     /*   function save_dat(neww){
+           var post_mthd = new XMLHttpRequest();
+            post_mthd.open("POST","https://restaurantappp.herokuapp.com/api/order");
+            post_mthd.setRequestHeader("content-type","application/json");
+            post_mthd.send(JSON.stringify(neww))
+            post_mthd.onreadystatechange = function(){
+                if(this.readyState == 4){
+                     get_request()
+                }
+            }
+           
+        }*/
+        
+        function edit_func(a){
+            var id_uniq = a;
+            var id_main = document.getElementById(a);
+            var id_class= id_main.getElementsByTagName('span');
+            console.log(id_class[1].innerHTML)
+            /*===innerhtml====*/
+            var edit_html = document.getElementById('edit_modal');
+            var edit_inner = edit_html.getElementsByClassName("modal-dialog");
+            //console.log
+            var i =0
+            edit_inner[0].innerHTML = '<div class="form"><div class="col_add"><strong>OrderNumber:</strong><span><input onkeyup="edit_value()" id="edit_order_no" value='+id_class[0].innerHTML+' onkeyup="edit_value()" type="text"></span></div><div class="col_add"><strong>OrderName:</strong><span><input value='+id_class[i+1].innerHTML+' onkeyup="edit_value()" id="edit_order_nme" type="text"></span></div><div class="col_add"><strong>OrderStatus:</strong><span><input value='+id_class[i+2].innerHTML+' onkeyup="edit_value()" id="edit_order_status" type="text"></span></div><div class="col_add"><strong>ClientName:</strong><span><input value='+id_class[i+3].innerHTML+' onkeyup="edit_value()" id="edit_client_nam" type="text"></span></div><div class="col_add"><strong>PhoneNumber:</strong><span><input value='+id_class[i+4].innerHTML+'  onkeyup="edit_value()" type="text" id="edit_phone_no"></span></div><div class="col_add"><strong>Driver:</strong><span><input value='+id_class[i+5].innerHTML+' onkeyup="edit_value()" type="text" id="edit_driver"></span></div><div class="col_add"><strong>ClientAddress:</strong><span><textarea id="edit_address" onkeyup="edit_value()">'+id_class[i+6].innerHTML+'</textarea></span></div></div><div class="btns_save"><button onclick="edit_save(edit_value())" type="button" class="btn btn-default">Update</button><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'
+        
+        }
+          // edit_value()
+        
+        function edit_value(){
+        var obje = new Object();
+        obje.ordernumber = document.getElementById('edit_order_no').value;
+        obje.ordername = document.getElementById('edit_order_nme').value;
+        obje.orderstatus = document.getElementById('edit_order_status').value;
+        obje.clientname = document.getElementById('edit_client_nam').value;
+        obje.clientaddress = document.getElementById('edit_phone_no').value;
+        obje.phonenuber = document.getElementById('edit_driver').value;
+        obje.driver = document.getElementById('edit_address').value;
+        return obje;
+        }   
+        
+      
+        function edit_save(aa){
+            console.log(aa);
+            var edit = new XMLHttpRequest();
+            edit.open("PUT","https://restaurantappp.herokuapp.com/api/order/aa")
+            edit.setRequestHeader("content-type","application/json")
+            edit.send(JSON.stringify(aa))
+            edit.onreadystatechange=function(){
+                if(this.readyState==4){
+                    console.log('success')
+                }
+            }
+        }
+        
+        
+        
+    
+        
+        
+        
+        
+        
+
+    </script>
+
+   
+</html>
